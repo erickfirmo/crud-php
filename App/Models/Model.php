@@ -8,9 +8,27 @@ class Model {
 
     protected $collection = [];
 
+    protected $statement;
+
+    protected $db;
+
+    public function setStatement()
+    {
+        $this->statement = $this->connect()->prepare($this->getSql());
+    }
+
     public function setCollection(array $collection) : void
     {
         $this->collection = $collection;
+    }
+
+    public function clearQuery() {
+        $this->sql = null;
+    }
+
+    public function connect()
+    {
+        return $this->db = $this->getPDOConnection();
     }
 
     public function addQuery(string $sql) : Object
@@ -22,57 +40,83 @@ class Model {
 
     public function get() : array
     {
+        $this->statement->execute();
+        $registers = $this->statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->setCollection($registers);
+
         return $this->collection;
+    }
+
+    public function first() : array
+    {
+        return array_pop($this->collection);
+    }
+
+    public function last() : array
+    {
+        return end($this->collection);
+    }
+
+    public function limit(int $limit) : Object
+    {
+        $this->addQuery(' LIMIT '.$limit);
+        $this->setStatement();
+
+        return $this;
     }
 
     public function orderByAsc() : Object
     {
-        $this->addQuery('ORDER BY ASC');
+        $this->addQuery(' ORDER BY id ASC');
+        $this->setStatement();
 
         return $this;
     }
 
     public function orderByDesc() : Object
     {
-        $this->addQuery('ORDER BY DESC');
+        $this->addQuery(' ORDER BY id DESC');
+        $this->setStatement();
 
         return $this;
     }
 
-    public function all() : Object
+    public function getSql()
     {
-        $sql = "SELECT * FROM ".$this->table;
-        $db = $this->getPDOConnection();
-        $stmt = $db->prepare($sql);
-        $stmt->execute();
-        $registers = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        return $this->sql;
+    }
 
-        $this->setCollection($registers);
+    public function select() : Object
+    {
+        $this->clearQuery();
+        $sql = "SELECT * FROM ".$this->table;
+        $this->addQuery($sql);
 
         return $this;
     }
 
     public function insert(array $values)
     {
+        $this->clearQuery();
+
         $columns = array_keys($values);
         $values = array_values($values);
         $columns = implode(", ", $columns);
         $values = implode("', '", $values);
 
-        $sql = "
-            INSERT INTO ".$this->table." (".$columns.") VALUES ('".$values."');
-            SELECT LAST_INSERT_ID();
-        ";
+        $sql = "INSERT INTO ".$this->table." (".$columns.") VALUES ('".$values."')";
+        $this->addQuery($sql);
+        $this->setStatement();
 
-        $db = $this->getPDOConnection();
-        $stmt = $db->prepare($sql);
-        $stmt->execute();
+        $this->statement->execute();
 
-        return $this->findById($db->lastInsertId());
+        return $this->findById($this->db->lastInsertId());
     }
 
     public function update(int $id, array $values)
     { 
+        $this->clearQuery();
+
         $columns = implode(', ', array_map(
             function ($v, $k) { return sprintf("%s='%s'", $k, $v); },
             $values,
@@ -80,29 +124,34 @@ class Model {
         ));
 
         $sql = 'UPDATE '.$this->table.' SET '.$columns.' WHERE id='.$id;
-        $db = $this->getPDOConnection();
-        $stmt = $db->prepare($sql);
+        $this->addQuery($sql);
+        $this->setStatement();
 
-        return $stmt->execute();
+        return $this->statement->execute();
     }
 
     public function delete(int $id)
     {
-        $sql = 'DELETE FROM '.$this->table.' WHERE id='.$id;
-        $db = $this->getPDOConnection();
-        $stmt = $db->prepare($sql);
+        $this->clearQuery();
 
-        return $stmt->execute();
+        $sql = 'DELETE FROM '.$this->table.' WHERE id='.$id;
+        $this->addQuery($sql);
+        $this->setStatement();
+
+        return $this->statement->execute();
     }
 
     public function findById(int $id)
     {
-        $sql = 'SELECT * FROM '.$this->table.' WHERE id='.$id;
-        $db = $this->getPDOConnection();
-        $stmt = $db->prepare($sql);
-        $stmt->execute();
+        $this->clearQuery();
 
-        return $stmt->fetch();
+        $sql = 'SELECT * FROM '.$this->table.' WHERE id='.$id;
+        $this->addQuery($sql);
+        $this->setStatement();
+
+        $this->statement->execute();
+
+        return  $this->statement->fetch();
     }
 
     public function getPDOConnection()
