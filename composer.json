@@ -1,4 +1,7 @@
 {
+    "require": {
+        "erickfirmo/router": "^1.1"
+    },
     "autoload": {
         "psr-4": {
              "Core\\": "Core/",
