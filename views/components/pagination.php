@@ -4,6 +4,6 @@
     <?php foreach($pages as $page) { ?>
             <li class="page-item <?php activePage('pessoas', 'active', ['page' => $page]); ?>"><a class="page-link" href="<?php url('pessoas?page='.$page); ?>"><?php echo $page; ?></a></li>
     <?php } ?>
-    <li class="page-item <?php echo count($pages) == $_GET['page'] ? 'disabled' : ''; ?>"><a class="page-link" href="javascript:void(0);" onclick="nextPage();">Próxima</a></li>
+    <li class="page-item <?php echo count($pages) == $_GET['page'] || count($pages) == 1 ? 'disabled' : ''; ?>"><a class="page-link" href="javascript:void(0);" onclick="nextPage();">Próxima</a></li>
   </ul>
 </nav>
