@@ -278,5 +278,5 @@ $(document).ready(function(){
         field.mask(maskBehavior.apply({}, arguments), options);
         }
     };
-    //$('.phone-mask').mask(maskBehavior, options);
+    $('.phone-mask').mask(maskBehavior, options);
 });
