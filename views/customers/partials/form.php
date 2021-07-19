@@ -28,7 +28,7 @@
             </label>
         </div>
         <div class="col-sm-10">
-            <input type="text" name="email" class="form-control" id="inputEmail" value="<?php echo isset($model) ? $model->email : old('email'); ?>" placeholder="Exemplo: seunome@gmail.com" <?php echo isset($disabled) ? 'disabled' : ''; ?>>
+            <input type="text" name="email" class="form-control" id="inputEmail" value="<?php echo isset($model) ? $model->email : old('email'); ?>" placeholder="Ex: seunome@gmail.com" <?php echo isset($disabled) ? 'disabled' : ''; ?>>
             <?php 
                 if (error_field('email')) { 
                     foreach(error_field('email') as $message) { ?>
