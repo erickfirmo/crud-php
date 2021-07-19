@@ -9,6 +9,11 @@
         </tr>
     </thead>
     <tbody>
+    <?php if (!count($customers->items)) { ?>
+        <tr>
+            <td class="align-center">Nenhum registro encontrado</td>
+        </tr>
+    <?php } ?>
     <?php foreach ($customers->items as $customer) { ?>
         <tr>
             <th scope="row"><?php echo $customer->id; ?></th>
@@ -43,6 +48,7 @@
             <th>Nome</th>
             <th>E-mail</th>
             <th>Telefone</th>
+            <th>Ações</th>
         </tr>
     </tfoot>
 </table>
