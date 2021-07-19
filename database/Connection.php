@@ -25,6 +25,6 @@ class Connection
     }
 
     public function setConfig() {
-        $this->config = include 'config.php';
+        $this->config = include __DIR__.'/../config/database.php';
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-$router->get(['/', 'CustomerController@welcome']);
+$router->get(['/', 'CustomerController@home']);
 $router->get(['/pessoas', 'CustomerController@index']);
 $router->get(['/pessoas/cadastrar', 'CustomerController@create']);
 $router->get(['/pessoas/editar/{$id}', 'CustomerController@edit']);

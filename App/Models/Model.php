@@ -12,21 +12,29 @@ class Model {
 
     protected $db;
 
-    public function setStatement()
+    protected $perPage;
+
+    protected $links;
+
+    public function setStatement() : void
     {
         $this->statement = $this->connect()->prepare($this->getSql());
     }
 
-    public function setCollection(array $collection) : void
+    public function setLink(int $count) : void
     {
-        $this->collection = $collection;
+        $rest = $count % $this->perPage;
+        $pages = $count / $this->perPage;
+        $pages = $rest > 0 ? ($pages + 1) : $pages;
+        $this->links = array_keys(array_fill(1, $pages, null));
     }
 
-    public function clearQuery() {
+    public function clearQuery() : void
+    {
         $this->sql = null;
     }
 
-    public function connect()
+    public function connect() : Object
     {
         return $this->db = $this->getPDOConnection();
     }
@@ -63,6 +71,36 @@ class Model {
         $this->setStatement();
 
         return $this;
+    }
+
+    public function paginate(int $perPage=10, $page=1)
+    {  
+        $page = isset($_GET['page']) ? $_GET['page'] : $page;
+        
+        /* busca uma determinada quantidade de itens */
+        $start = ($page * $perPage) - $perPage;
+        $this->addQuery(' LIMIT '.$start.', '.$perPage);
+        $this->setStatement();
+        $this->statement->execute();
+        $registers = $this->statement->fetchAll(\PDO::FETCH_ASSOC);
+
+        /* define quantidade de itens por página */
+        $this->perPage = $perPage;
+
+        /* limpa query */
+        $this->clearQuery();
+
+        /* define links */
+        $this->addQuery('SELECT COUNT(*) FROM '.$this->table);
+        $this->setStatement();
+        $this->statement->execute();
+        $count = $this->statement->fetchColumn();
+        $this->setLink($count);
+
+        /* define collection */
+        $this->setCollection($registers);
+
+        return $this->collection;
     }
 
     public function orderByAsc() : Object
@@ -102,9 +140,13 @@ class Model {
         $columns = array_keys($values);
         $values = array_values($values);
         $columns = implode(", ", $columns);
-        $values = implode("', '", $values);
 
-        $sql = "INSERT INTO ".$this->table." (".$columns.") VALUES ('".$values."')";
+        $values = implode(', ', array_map(
+            function ($v) { return sprintf("'%s'", addslashes($v)); },
+            $values
+        ));
+
+        $sql = "INSERT INTO ".$this->table." (".$columns.") VALUES (".$values.")";
         $this->addQuery($sql);
         $this->setStatement();
 
@@ -118,7 +160,7 @@ class Model {
         $this->clearQuery();
 
         $columns = implode(', ', array_map(
-            function ($v, $k) { return sprintf("%s='%s'", $k, $v); },
+            function ($v, $k) { return sprintf("%s='%s'", $k, addslashes($v)); },
             $values,
             array_keys($values)
         ));
@@ -151,7 +193,32 @@ class Model {
 
         $this->statement->execute();
 
-        return  $this->statement->fetch();
+        $registers = $this->statement->fetch();
+
+        #dd($registers);
+
+        $this->setCollection($registers, true);
+
+        return $this->collection->items;
+    }
+
+    public function setCollection(array $registers, $singleRegister=false, array $items = [], $item = null) : void
+    {
+        if($singleRegister) {
+            $items = (object) $registers;
+        } else {
+            foreach($registers as $register) {
+                $item = (object) $register;
+                array_push($items, $item);
+            }
+        }
+        
+
+        $collection = new \stdClass;
+        $collection->items = $items;
+        $collection->links = $this->links;
+        
+        $this->collection = $collection;
     }
 
     public function getPDOConnection()

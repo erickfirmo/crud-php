@@ -225,7 +225,7 @@ function toggleFullScreen() {
         }
     }
 }
-
+/*
 $('body').append('' +
     '<div class="fixed-button">' +
         '<a href="https://themeforest.net/item/mega-able-bootstrap-4-and-angular-5-admin-dashboard-template/20790784?ref=phoenixcoded" target="_blank" class="btn btn-md btn-primary">' +
@@ -233,6 +233,7 @@ $('body').append('' +
         '</a> ' +
     '</div>' +
 '');
+*/
 var $window = $(window);
 var nav = $('.fixed-button');
 $window.scroll(function() {
@@ -241,4 +242,41 @@ $window.scroll(function() {
     } else {
         nav.removeClass('active');
     }
+});
+
+/* paginação */
+function getPageNumber() {
+    let url = new URL(window.location.href);
+    let page = url.searchParams.get("page");
+    if(!page) {
+        return false;
+    }
+    return parseInt(page);
+}
+
+function previousPage() {
+    let page = getPageNumber();
+    page = page == false ? 1 : page;
+    page = page > 1 ? parseInt(page) - 1 : page;
+    window.location.href = location.protocol + '//' + location.host + location.pathname + '?page=' + page;
+}
+
+function nextPage() {
+    let page = getPageNumber();
+    page = page == false ? 1 : page;
+    page = parseInt(page) + 1;
+    window.location.href = location.protocol + '//' + location.host + location.pathname + '?page=' + page;
+}
+
+/* Masks */
+$(document).ready(function(){
+    /* Phone mask */
+    var maskBehavior = function (val) {
+        return val.replace(/\D/g, '').length === 11 ? '(00) 00000-0000' : '(00) 0000-00009';
+    },
+    options = {onKeyPress: function(val, e, field, options) {
+        field.mask(maskBehavior.apply({}, arguments), options);
+        }
+    };
+    //$('.phone-mask').mask(maskBehavior, options);
 });
