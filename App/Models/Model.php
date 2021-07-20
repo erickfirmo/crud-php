@@ -16,11 +16,19 @@ class Model {
 
     protected $links;
 
+    // realiza conexão com o banco de dados
+    public function connect() : Object
+    {
+        return $this->db = (new \Connection())->getPDOConnection();
+    }
+
+    // seta statement
     public function setStatement() : void
     {
         $this->statement = $this->connect()->prepare($this->getSql());
     }
 
+    // seta array de links da paginação
     public function setLink(int $count) : void
     {
         $rest = $count % $this->perPage;
@@ -29,16 +37,13 @@ class Model {
         $this->links = array_keys(array_fill(1, $pages, null));
     }
 
+    // limpa query do objeto
     public function clearQuery() : void
     {
         $this->sql = null;
     }
 
-    public function connect() : Object
-    {
-        return $this->db = $this->getPDOConnection();
-    }
-
+    // acrescenta query a query já existente
     public function addQuery(string $sql) : Object
     {
         $this->sql = $this->sql . $sql;
@@ -46,25 +51,38 @@ class Model {
         return $this;
     }
 
-    public function get() : array
+    // seta objeto com os registros da consulta
+    public function setCollection(array $registers, $singleRegister=false, array $items = [], $item = null) : void
+    {
+        if($singleRegister) {
+            $items = (object) $registers;
+        } else {
+            foreach($registers as $register) {
+                $item = (object) $register;
+                array_push($items, $item);
+            }
+        }
+        
+        $collection = new \stdClass;
+        $collection->items = $items;
+        $collection->links = $this->links;
+        
+        $this->collection = $collection;
+    }
+
+    // retorna objeto com os registros buscados
+    public function get() : Object
     {
         $this->statement->execute();
+
         $registers = $this->statement->fetchAll(\PDO::FETCH_ASSOC);
+
         $this->setCollection($registers);
 
         return $this->collection;
     }
 
-    public function first() : array
-    {
-        return array_pop($this->collection);
-    }
-
-    public function last() : array
-    {
-        return end($this->collection);
-    }
-
+    // seta limite de dados da consulta
     public function limit(int $limit) : Object
     {
         $this->addQuery(' LIMIT '.$limit);
@@ -73,6 +91,7 @@ class Model {
         return $this;
     }
 
+    // retorna registros com paginação
     public function paginate(int $perPage=10, $page=1)
     {  
         $page = isset($_GET['page']) ? $_GET['page'] : $page;
@@ -103,6 +122,7 @@ class Model {
         return $this->collection;
     }
 
+    // ordena regitros em ordem crescente
     public function orderByAsc() : Object
     {
         $this->addQuery(' ORDER BY id ASC');
@@ -111,6 +131,7 @@ class Model {
         return $this;
     }
 
+    // ordena regitros em ordem decrescente
     public function orderByDesc() : Object
     {
         $this->addQuery(' ORDER BY id DESC');
@@ -119,20 +140,24 @@ class Model {
         return $this;
     }
 
+    // retorna query
     public function getSql()
     {
         return $this->sql;
     }
 
+    // busca registros
     public function select() : Object
     {
         $this->clearQuery();
         $sql = "SELECT * FROM ".$this->table;
         $this->addQuery($sql);
+        $this->setStatement();
 
         return $this;
     }
 
+    // salva registro
     public function insert(array $values)
     {
         $this->clearQuery();
@@ -155,6 +180,7 @@ class Model {
         return $this->findById($this->db->lastInsertId());
     }
 
+    // atualiza registro
     public function update(int $id, array $values)
     { 
         $this->clearQuery();
@@ -172,6 +198,7 @@ class Model {
         return $this->statement->execute();
     }
 
+    // deleta registro
     public function delete(int $id)
     {
         $this->clearQuery();
@@ -183,6 +210,7 @@ class Model {
         return $this->statement->execute();
     }
 
+    // busca registro pelo id
     public function findById(int $id)
     {
         $this->clearQuery();
@@ -195,34 +223,8 @@ class Model {
 
         $registers = $this->statement->fetch();
 
-        #dd($registers);
-
         $this->setCollection($registers, true);
 
         return $this->collection->items;
-    }
-
-    public function setCollection(array $registers, $singleRegister=false, array $items = [], $item = null) : void
-    {
-        if($singleRegister) {
-            $items = (object) $registers;
-        } else {
-            foreach($registers as $register) {
-                $item = (object) $register;
-                array_push($items, $item);
-            }
-        }
-        
-
-        $collection = new \stdClass;
-        $collection->items = $items;
-        $collection->links = $this->links;
-        
-        $this->collection = $collection;
-    }
-
-    public function getPDOConnection()
-    {
-        return (new \Connection())->getPDOConnection();
     }
 }
