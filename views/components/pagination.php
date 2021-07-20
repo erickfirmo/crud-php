@@ -1,6 +1,6 @@
 <nav aria-label="Page navigation example">
     <ul class="pagination">
-    <li class="page-item <?php echo 1 == $_GET['page'] || !isset($_GET['page']) ? 'disabled' : ''; ?>"><a class="page-link" href="javascript:void(0);" onclick="previousPage();">Anterior</a></li>
+    <li class="page-item <?php echo 1 == $_GET['page'] || !isset($_GET['page']) || count($pages) <= 1 ? 'disabled' : ''; ?>"><a class="page-link" href="javascript:void(0);" onclick="previousPage();">Anterior</a></li>
     <?php
       $page = isset($_GET['page']) ? $_GET['page'] : 1;
       $start = ($page > 5) ? $page - 5 : 1;
