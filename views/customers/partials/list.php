@@ -23,12 +23,12 @@
             <td>
                 <div>
                     <a href="<?php url('pessoas/'.$customer->id); ?>">
-                        <button class="btn waves-effect waves-light btn-info btn-icon">
+                        <button class="btn waves-effect waves-light btn-dark btn-icon">
                             <i class="ti-eye m-0"></i>
                         </button>
                     </a>
                     <a href="<?php url('pessoas/editar/'.$customer->id); ?>">
-                        <button class="btn waves-effect waves-light btn-success btn-icon">
+                        <button class="btn waves-effect waves-light btn-primary btn-icon">
                             <i class="ti-pencil m-0"></i>
                         </button>
                     </a>
