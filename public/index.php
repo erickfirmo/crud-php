@@ -17,5 +17,3 @@ require __DIR__.'/../routes/app.php';
 
 // Run the router
 $router->run();  
-
-
