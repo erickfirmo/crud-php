@@ -61,7 +61,7 @@ class Model {
         } else {
             foreach($registers as $register) {
                 $item = new $modelName;
-                // cria objeto model basedo no fillable
+                // cria objeto model baseado no fillable
                 foreach ($this->fillable as $f) {
                     $item->$f = $register[$f];
                 }
