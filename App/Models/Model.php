@@ -14,7 +14,7 @@ class Model {
 
     protected $perPage;
 
-    protected $links;
+    public $links;
 
     // realiza conexão com o banco de dados
     public function connect() : Object
@@ -54,15 +54,22 @@ class Model {
     // seta objeto com os registros da consulta
     public function setCollection(array $registers, $singleRegister=false, array $items = [], $item = null) : void
     {
+        $modelName = get_called_class();
+
         if($singleRegister) {
             $items = (object) $registers;
         } else {
             foreach($registers as $register) {
-                $item = (object) $register;
+                $item = new $modelName;
+                // cria objeto model basedo no fillable
+                foreach ($this->fillable as $f) {
+                    $item->$f = $register[$f];
+                }
+
                 array_push($items, $item);
             }
         }
-        
+
         $collection = new \stdClass;
         $collection->items = $items;
         $collection->links = $this->links;
