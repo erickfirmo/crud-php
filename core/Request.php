@@ -76,7 +76,7 @@ class Request
         if($max < strlen($_POST[$inputName]))
         {
             $this->status = false;
-            $this->errors[$inputName]['max'] = $this->getMessage($inputName.'.max');
+            $this->errors[$inputName]['max'] = str_replace(':max', $max, $this->getMessage($inputName.'.max'));
         }
     }
 
