@@ -58,6 +58,9 @@ class CustomerController extends Controller {
             return $this->back();
         }
 
+        // trata número de telefone
+        $phone = $this->clearPhone($phone);
+
         // cadastra pessoa no banco de dados
         $model = (new Customer())->insert([
             'name' => $name,
@@ -123,6 +126,9 @@ class CustomerController extends Controller {
             return $this->back();
         }
 
+        // trata número de telefone
+        $phone = $this->clearPhone($phone);
+
         // atualiza registro da pessoa no bando de dados
         (new Customer())->update($id, [
             'name' => $name,
@@ -145,6 +151,13 @@ class CustomerController extends Controller {
         $this->success('Pessoa removida com sucesso.');
         // redireciona para a página de listagem de pessoas
         return $this->redirect('/pessoas');
+    }
+
+    
+    // trata número de telefone
+    public function clearPhone($phone)
+    {
+        return preg_replace("/[^A-Za-z0-9]/", "", $phone);
     }
 
     // valida telefone
