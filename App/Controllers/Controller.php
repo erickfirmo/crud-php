@@ -8,34 +8,23 @@ use Core\Session;
 class Controller {
     public $request;
 
-    public function __construct()
-    {
-        $this->request = new Request;
-    }
-
-    public function redirect(string $route) : Object
+    // redireciona para a rota passada
+    public function redirect(string $route) : void
     {
         header("Location: ".(isset($_SERVER['HTTPS']) && !empty($_SERVER['HTTPS']) ? 'https' : 'http')."://".$_SERVER['HTTP_HOST'].$route);
         exit;
     }
 
-    public function back()
+    // redireciona para a rota anteior
+    public function back() : void
     {
         header('location: '.$_SERVER['HTTP_REFERER']);
         exit;
     }
 
-    public function request() : Object
+    // seta mensagem de erro
+    public function error($name, $message)
     {
-        return $this->request;
-    }
-    
-    public function jsonResponse(array $array)
-    {
-        echo json_encode($array);
-    }
-
-    public function error($name, $message) {
         $errors = Session::get('alert-errors');
         
         if(isset($errors[$name])) {
@@ -47,7 +36,9 @@ class Controller {
         Session::put('alert-errors', $errors);
     }
 
-    public function success($message) {
+    // seta mensagem de sucesso
+    public function success($message)
+    {
         Session::put('alert-success', $message);
     }
 }
