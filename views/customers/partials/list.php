@@ -19,7 +19,7 @@
             <th scope="row"><?php echo $customer->id; ?></th>
             <td><?php echo $customer->name; ?></td>
             <td><?php echo $customer->email; ?></td>
-            <td><?php echo $customer->phone; ?></td>
+            <td><?php echo $customer->getPhone(); ?></td>
             <td>
                 <div>
                     <a href="<?php url('pessoas/'.$customer->id); ?>">
