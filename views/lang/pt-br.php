@@ -16,7 +16,7 @@ return [
         'name.min' => 'O nome deve ter no mínimo :min caracteres.',
         // email
         'email.required' => 'O e-mail é obrigatório.',
-        'email.invalid' => 'O e-mail não é válido.',
+        'email.invalid' => 'O e-mail é inválido.',
         'email.max' => 'O e-mail deve ter no máximo :max caracteres.',
         'email.min' => 'O e-mail deve ter no mínimo :min caracteres.',
         // phone
