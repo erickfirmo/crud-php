@@ -29,8 +29,8 @@ class CustomerController extends Controller {
     {                
         // validação de campos
         $validated = request()->validate([
-            'name' => 'required|max:40',
-            'email' => 'required|max:30',
+            'name' => 'required|max:60',
+            'email' => 'required|max:60',
         ]);
 
         // pega campos enviados
@@ -39,25 +39,23 @@ class CustomerController extends Controller {
         $phone = request()->input('phone');
 
         // validação de email
-        if (!filter_var($email, FILTER_VALIDATE_EMAIL)){
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL) && $email != null){
             // seta mensagem de erro para e-mail
             $this->error('email', request()->getMessage('email.invalid'));
-            // redireciona para a página de cadastro
-            return $this->redirect('/pessoas/cadastrar');
+            $validated = false;
         }
 
         // validação de telefone
-        if (!$this->phoneValidate($phone)) {
+        if (!$this->phoneValidate($phone) && $phone != null) {
             // seta mensagem de erro para telefone
             $this->error('phone', request()->getMessage('phone.invalid'));
-            // redireciona para a página de cadastro
-            return $this->redirect('/pessoas/cadastrar');
+            $validated = false;
         }
 
         // verifica se todos os campos são válidos
         if(!$validated) {
             // redireciona para a página de cadastro
-            return $this->redirect()->back();
+            return $this->back();
         }
 
         // cadastra pessoa no banco de dados
@@ -96,8 +94,8 @@ class CustomerController extends Controller {
     {
         // validação de campos
         $validated = request()->validate([
-            'name' => 'required|max:40',
-            'email' => 'required|max:30',
+            'name' => 'required|max:60',
+            'email' => 'required|max:60',
         ]);
 
         // pega campos enviados
@@ -106,25 +104,23 @@ class CustomerController extends Controller {
         $phone = request()->input('phone');
 
         // validação de email
-        if (!filter_var($email, FILTER_VALIDATE_EMAIL)){
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL) && $email != null){
             // seta mensagem de erro e-mail
             $this->error('email', request()->getMessage('email.email'));
-            // redireciona para a página de edição
-            return $this->redirect('/pessoas/editar/'.$id);
+            $validated = false;
         }
 
         // validação de telefone
-        if (!$this->phoneValidate($phone)) {
+        if (!$this->phoneValidate($phone) && $phone != null) {
             // seta mensagem de erro para telefone
             $this->error('phone', request()->getMessage('phone.phone'));
-            // redireciona para a página de edição
-            return $this->redirect('/pessoas/editar/'.$id);
+            $validated = false;
         }
 
         // verifica se todos os campos são válidos
         if(!$validated) {
             // redireciona para a página de edição
-            return $this->redirect()->back();
+            return $this->back();
         }
 
         // atualiza registro da pessoa no bando de dados
@@ -157,7 +153,8 @@ class CustomerController extends Controller {
         // verifica se telefone é valido nos formatos (00) 00000-0000 ou (00) 0000-0000
         $regex = '/\(\d{2,}\) \d{4,}\-\d{4}/';
 
-        if (preg_match($regex, $phone) == false) {
+        if (preg_match($regex, $phone) == false)
+        {
             // o número não foi validado
             return false;
         } else {
