@@ -28,11 +28,11 @@ if (!function_exists('view'))
         include '../views/'.$view.'.php';
 
         // limpa session de inputs
-        \Core\Session::remove("old_fields");
+        \Core\Session::remove('old_fields');
 
         // limpa session de alertas
-        \Core\Session::remove("alert-errors");
-        \Core\Session::remove("alert-success");
+        \Core\Session::remove('alert-errors');
+        \Core\Session::remove('alert-success');
     }
 }
 
@@ -59,13 +59,9 @@ if (!function_exists('old'))
 {
     function old($inputName)
     {
-        /*if(session_status() == PHP_SESSION_NONE)
-                session_start();*/
-
-        $old_fields = \Core\Session::get("old_fields");
+        $old_fields = \Core\Session::get('old_fields');
 
         echo isset($old_fields[$inputName]) ? $old_fields[$inputName] : '';
-
     }
 }
 
@@ -84,7 +80,7 @@ if (!function_exists('classActivePath'))
     function classActivePath($path, $activeClass, $urlParams=[], $n=0)
     {
         // pega url atual
-        $url = $urlParams == null ? strtok($_SERVER["REQUEST_URI"], '?') : $_SERVER["REQUEST_URI"];
+        $url = $urlParams == null ? strtok($_SERVER['REQUEST_URI'], '?') : $_SERVER['REQUEST_URI'];
         // trata url passada por parametro
         $path = ($path != '/' ? '/' : '') . $path;
         // escreve parametro para a url
@@ -142,6 +138,19 @@ if (!function_exists('session'))
     function session($key)
     {
         return \Core\Session::get($key);
+    }
+}
+
+// retorna objeto request
+if (!function_exists('request'))
+{
+    function request()
+    {
+        if(!\Core\Session::get('old_fields')) {
+            \Core\Session::put('old_fields', $_POST);
+        }
+        
+        return new \Core\Request;
     }
 }
 
