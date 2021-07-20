@@ -109,8 +109,8 @@
                                                     <div class="card-block">
                                                         <div class="row align-items-center">
                                                             <div class="col-8">
-                                                                <h4 class="text-c-blue">45</h4>
-                                                                <h6 class="text-muted m-b-0">Pessoas</h6>
+                                                                <h4 class="text-c-blue"><?php echo count($customers->items); ?></h4>
+                                                                <h6 class="text-muted m-b-0"><?php echo count($customers->items) == 0 || count($customers->items) > 1 ? ' Pessoas' : ' Pessoa'; ?></h6>
                                                             </div>
                                                             <div class="col-4 text-right">
                                                                 <i class="ti-user f-28"></i>
@@ -120,7 +120,7 @@
                                                     <div class="card-footer bg-c-blue">
                                                         <div class="row align-items-center">
                                                             <div class="col-9">
-                                                                <p class="text-white m-b-0">45 pessoas cadastradas</p>
+                                                                <p class="text-white m-b-0"><?php echo count($customers->items) . (count($customers->items) == 0 || count($customers->items) > 1 ? ' pessoas cadastradas' : ' pessoa cadastrada'); ?></p>
                                                             </div>
                                                             <div class="col-3 text-right">
                                                                 <a href="<?php url('pessoas'); ?>">
