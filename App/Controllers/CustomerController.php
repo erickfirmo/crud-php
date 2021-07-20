@@ -41,7 +41,7 @@ class CustomerController extends Controller {
         // validação de email
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)){
             // seta mensagem de erro para e-mail
-            $this->error('email', 'Este e-mail não é válido.');
+            $this->error('email', request()->getMessage('email.invalid'));
             // redireciona para a página de cadastro
             return $this->redirect('/pessoas/cadastrar');
         }
@@ -49,7 +49,7 @@ class CustomerController extends Controller {
         // validação de telefone
         if (!$this->phoneValidate($phone)) {
             // seta mensagem de erro para telefone
-            $this->error('phone', 'Telefone inválido.');
+            $this->error('phone', request()->getMessage('phone.invalid'));
             // redireciona para a página de cadastro
             return $this->redirect('/pessoas/cadastrar');
         }
@@ -108,7 +108,7 @@ class CustomerController extends Controller {
         // validação de email
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)){
             // seta mensagem de erro e-mail
-            $this->error('email', 'Este e-mail não é válido.');
+            $this->error('email', request()->getMessage('email.email'));
             // redireciona para a página de edição
             return $this->redirect('/pessoas/editar/'.$id);
         }
@@ -116,7 +116,7 @@ class CustomerController extends Controller {
         // validação de telefone
         if (!$this->phoneValidate($phone)) {
             // seta mensagem de erro para telefone
-            $this->error('phone', 'Telefone inválido.');
+            $this->error('phone', request()->getMessage('phone.phone'));
             // redireciona para a página de edição
             return $this->redirect('/pessoas/editar/'.$id);
         }
