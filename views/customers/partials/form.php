@@ -8,7 +8,7 @@
             </label>
         </div>
         <div class="col-sm-10">
-            <input type="text" name="name" class="form-control" id="inputName" value="<?php echo isset($model) ? $model->name : old('name'); ?>" placeholder="Nome Completo" <?php echo isset($disabled) ? 'disabled' : ''; ?>>
+            <input type="text" name="name" class="form-control" id="inputName" value="<?php echo isset($model) ? $model->name : old('name'); ?>" placeholder="Nome Completo" <?php echo isset($disabled) ? 'disabled' : ''; ?> autofocus>
             
             <?php 
                 if (error_field('name')) { 
