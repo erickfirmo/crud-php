@@ -102,6 +102,11 @@ class Model {
     public function paginate(int $perPage=10, $page=1)
     {  
         $page = isset($_GET['page']) ? $_GET['page'] : $page;
+
+        // verifica se valor da paginação não é numerico
+        if(!is_numeric($page) || $page == null) {
+            $page = 1;
+        }
         
         /* busca uma determinada quantidade de itens */
         $start = ($page * $perPage) - $perPage;
