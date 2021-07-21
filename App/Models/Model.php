@@ -104,7 +104,7 @@ class Model {
         $page = isset($_GET['page']) ? $_GET['page'] : $page;
 
         // verifica se valor da paginação não é numerico
-        if(!is_numeric($page) || $page == null) {
+        if(!is_numeric($page) || $page == null || $page == 0) {
             $page = 1;
         }
         
