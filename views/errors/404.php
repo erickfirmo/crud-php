@@ -22,7 +22,7 @@
             <hr>
             <!--div class='_1'>A PÁGINA</div-->
             <div class='_2'>A PÁGINA NÃO FOI ENCONTRADA</div>
-            <a class='btn' href='#'>VOLTAR AO INÍCIO</a>
+            <a class='btn' href='<?php url('/'); ?>'>VOLTAR AO INÍCIO</a>
         </div>
 </body>
 </html>
