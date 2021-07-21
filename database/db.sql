@@ -1,13 +1,13 @@
 
 --
--- Banco de dados: `crud_advise`
+-- Banco de dados: `test_crud`
 --
 
-CREATE DATABASE `crud_advise`
+CREATE DATABASE `test_crud`
 DEFAULT CHARACTER SET utf8
 DEFAULT COLLATE utf8_general_ci;
 
-USE `crud_advise`;
+USE `test_crud`;
 
 --
 -- Estrutura para tabela `customers`
