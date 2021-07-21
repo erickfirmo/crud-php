@@ -114,7 +114,7 @@ if (!function_exists('activePage'))
         // verifica se é a primeira página
         if($urlParams['page'] == $defaultPage) {
             // verifica se valor não foi definido ou se não é numerico
-            if(!is_numeric($_GET['page']) || !isset($_GET['page'])) {
+            if(!is_numeric($_GET['page']) || !isset($_GET['page']) || $_GET['page'] == 0) {
                 $urlParams = [];
             }
         }
