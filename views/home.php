@@ -105,33 +105,34 @@
                                         <div class="row">
                                         
                                             <div class="col-xl-3 col-md-6">
-                                                <div class="card">
-                                                    <div class="card-block">
-                                                        <div class="row align-items-center">
-                                                            <div class="col-8">
-                                                                <h4 class="text-c-blue"><?php echo count($customers->items); ?></h4>
-                                                                <h6 class="text-muted m-b-0"><?php echo count($customers->items) == 0 || count($customers->items) > 1 ? ' Pessoas' : ' Pessoa'; ?></h6>
+                                                <a href="<?php url('pessoas'); ?>">
+                                                    <div class="card">
+                                                        <div class="card-block">
+                                                            <div class="row align-items-center">
+                                                                <div class="col-8">
+                                                                    <h4 class="text-c-blue"><?php echo count($customers->items); ?></h4>
+                                                                    <h6 class="text-muted m-b-0"><?php echo count($customers->items) == 0 || count($customers->items) > 1 ? ' Pessoas' : ' Pessoa'; ?></h6>
+                                                                </div>
+                                                                <div class="col-4 text-right">
+                                                                    <i class="ti-user f-28"></i>
+                                                                </div>
                                                             </div>
-                                                            <div class="col-4 text-right">
-                                                                <i class="ti-user f-28"></i>
+                                                        </div>
+                                                        <div class="card-footer bg-c-blue">
+                                                            <div class="row align-items-center">
+                                                                <div class="col-9">
+                                                                    <p class="text-white m-b-0"><?php echo count($customers->items) . (count($customers->items) == 0 || count($customers->items) > 1 ? ' pessoas cadastradas' : ' pessoa cadastrada'); ?></p>
+                                                                </div>
+                                                                <div class="col-3 text-right">
+                                                                    <!--a href="<?php url('pessoas'); ?>">
+                                                                        <i class="ti-share text-white f-16"></i>
+                                                                    </a-->
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="card-footer bg-c-blue">
-                                                        <div class="row align-items-center">
-                                                            <div class="col-9">
-                                                                <p class="text-white m-b-0"><?php echo count($customers->items) . (count($customers->items) == 0 || count($customers->items) > 1 ? ' pessoas cadastradas' : ' pessoa cadastrada'); ?></p>
-                                                            </div>
-                                                            <div class="col-3 text-right">
-                                                                <a href="<?php url('pessoas'); ?>">
-                                                                    <i class="ti-share text-white f-16"></i>
-                                                                </a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                                </a>
                                             </div>
-                                           
                                         </div>
                                     </div>
                                     <!-- Page-body end -->
