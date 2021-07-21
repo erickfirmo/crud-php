@@ -1,6 +1,6 @@
 {
     "require": {
-        "erickfirmo/router": "^1.1"
+        "erickfirmo/router": "1.2.2"
     },
     "autoload": {
         "psr-4": {
