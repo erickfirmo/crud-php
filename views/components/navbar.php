@@ -1,7 +1,7 @@
 <nav class="navbar header-navbar pcoded-header">
     <div class="navbar-wrapper">
         <div class="navbar-logo">
-            <a class="mobile-menu waves-effect waves-light" id="mobile-collapse" href="<?php url('/'); ?>">
+            <a class="mobile-menu waves-effect waves-light" id="mobile-collapse" href="javascript:void(0)">
                 <i class="ti-menu"></i>
             </a>
             <div class="mobile-search waves-effect waves-light">
