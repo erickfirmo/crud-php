@@ -17,7 +17,7 @@ class Customer extends Model {
 
     public function getPhone()
     {
-        $phone= "(".substr($this->phone,0,2).") ".substr($this->phone,2,-4)." -".substr($this->phone,-4);
+        $phone= "(".substr($this->phone,0,2).") ".substr($this->phone,2,-4)."-".substr($this->phone,-4);
         return $phone;
     }
 }
