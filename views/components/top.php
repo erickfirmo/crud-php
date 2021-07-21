@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="<?php echo app('lang'); ?>">
 <head>
     <title>CRUD</title>
     <!-- Meta -->
