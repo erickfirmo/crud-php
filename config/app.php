@@ -4,7 +4,7 @@ return [
 
     'base_url' => '/',
 
-    'project_name' => 'CRUD - Pessoas',
+    'project_name' => 'CRUD',
 
     'project_description' => '',
 

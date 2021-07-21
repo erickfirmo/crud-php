@@ -8,7 +8,7 @@ return [
 
     'DB_PASSWORD' => '',
 
-    'DB_NAME' => 'crud-advise',
+    'DB_NAME' => 'crud_advise',
 
     'DB_DRIVER' => 'mysql',
 
