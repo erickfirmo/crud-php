@@ -1,6 +1,6 @@
 
 --
--- Banco de dados: `celke`
+-- Banco de dados: `crud_advise`
 --
 
 CREATE DATABASE `crud_advise`
@@ -10,7 +10,7 @@ DEFAULT COLLATE utf8_general_ci;
 USE `crud_advise`;
 
 --
--- Estrutura para tabela `customer`
+-- Estrutura para tabela `customers`
 --
 
 CREATE TABLE `customers`(
@@ -22,7 +22,7 @@ CREATE TABLE `customers`(
 );
 
 --
--- Fazendo dump de dados para tabela `usuarios`
+-- Fazendo dump de dados para tabela `customers`
 --
 
 INSERT INTO `customers` (`name`, `email`, `phone`) VALUES
