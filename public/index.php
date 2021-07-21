@@ -9,10 +9,13 @@ require __DIR__ . '/../vendor/autoload.php';
 // Creating the router instance
 $router = new \ErickFirmo\Router;
 
+// Defining erro page 404
+$router->notFoundView(__DIR__.'/../views/errors/404.php');
+
 // Requires helpers
 require __DIR__ . '/../helpers/functions.php';
 
-/* Load external routes file */
+// Load external routes file 
 require __DIR__.'/../routes/app.php';
 
 // Run the router
