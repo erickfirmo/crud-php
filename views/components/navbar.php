@@ -1,7 +1,7 @@
 <nav class="navbar header-navbar pcoded-header">
     <div class="navbar-wrapper">
         <div class="navbar-logo">
-            <a class="mobile-menu waves-effect waves-light" id="mobile-collapse" href="#!">
+            <a class="mobile-menu waves-effect waves-light" id="mobile-collapse" href="<?php url('/'); ?>">
                 <i class="ti-menu"></i>
             </a>
             <div class="mobile-search waves-effect waves-light">
@@ -15,7 +15,7 @@
                     </div>
                 </div>
             </div>
-            <a href="index.html">
+            <a href="<?php url('/'); ?>">
                 <img class="img-fluid" src="<?php asset('assets/images/logo.png" alt="Theme-Logo'); ?>" />
                 <!--h4>CRUD</h4-->
             </a>
