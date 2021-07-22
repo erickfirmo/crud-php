@@ -16,6 +16,8 @@ class Model {
 
     public $links;
 
+    public $hasWhere;
+
     // realiza conexão com o banco de dados
     public function connect() : Object
     {
@@ -238,5 +240,18 @@ class Model {
         $this->setCollection($registers, true);
 
         return $this->collection->items;
+    }
+
+    // adiciona where a query
+    public function where($column, $condition, $value)
+    {
+        $sql = !$this->hasWhere ?  ' WHERE ' : ' AND ';
+        $sql = $sql . $column . $condition . "'$value'";
+        $this->addQuery($sql);
+        $this->setStatement();
+
+        $this->hasWhere = true;
+
+        return $this;
     }
 }
