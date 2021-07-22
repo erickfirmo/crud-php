@@ -38,8 +38,21 @@ class CustomerController extends Controller {
         $email = request()->input('email');
         $phone = request()->input('phone');
 
+        // unique
+        $customers = (new Customer())->select()
+                                    ->where('email', '=', $email)
+                                    ->get();
+
+        // verifica se email já está em uso
+        if(count($customers->items)) {
+            // seta mensagem de erro para e-mail já existente
+            $this->error('email', request()->getMessage('email.unique'));
+            $validated = false;
+        }
+
         // validação de email
-        if (!filter_var($email, FILTER_VALIDATE_EMAIL) && $email != null){
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL) && $email != null)
+        {
             // seta mensagem de erro para e-mail
             $this->error('email', request()->getMessage('email.invalid'));
             $validated = false;
@@ -105,6 +118,20 @@ class CustomerController extends Controller {
         $name = request()->input('name');
         $email = request()->input('email');
         $phone = request()->input('phone');
+
+        // unique
+        // verifica se email já está em uso
+        $customers = (new Customer())->select()
+                                    ->where('id', '!=', $id)
+                                    ->where('email', '=', $email)
+                                    ->get();
+
+        // verifica se email já está em uso
+        if(count($customers->items)) {
+            // seta mensagem de erro para e-mail já existente
+            $this->error('email', request()->getMessage('email.unique'));
+            $validated = false;
+        }
 
         // validação de email
         if (!filter_var($email, FILTER_VALIDATE_EMAIL) && $email != null){
