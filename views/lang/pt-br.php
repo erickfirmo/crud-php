@@ -19,6 +19,7 @@ return [
         'email.invalid' => 'O e-mail é inválido.',
         'email.max' => 'O e-mail deve ter no máximo :max caracteres.',
         'email.min' => 'O e-mail deve ter no mínimo :min caracteres.',
+        'email.unique' => 'O e-mail já está em uso.',
         // phone
         'phone.required' => 'O telefone é obrigatório.',
         'phone.invalid' => 'O telefone é inválido.',
