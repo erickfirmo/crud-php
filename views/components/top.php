@@ -30,8 +30,6 @@
     <!-- am chart export.css -->
     <link rel="stylesheet" href="https://www.amcharts.com/lib/3/plugins/export/export.css" type="text/css" media="all" />
     <!-- Sweet Alert 2 -->
-    
     <link rel="stylesheet" href="<?php asset('node_modules/sweetalert2/dist/sweetalert2.css'); ?>" type="text/css">
     <!-- Style.css -->
     <link rel="stylesheet" type="text/css" href="<?php asset('assets/css/style.css'); ?>">
-
