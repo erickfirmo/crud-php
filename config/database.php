@@ -2,16 +2,16 @@
 
 return [
 
-    'HOST' => 'localhost',
+    'host' => 'localhost',
 
-    'DB_USER' => 'root',
+    'driver' => 'mysql',
 
-    'DB_PASSWORD' => '',
+    'charset' => 'utf-8',
 
-    'DB_NAME' => 'test_crud',
+    'database' => 'test_crud',
 
-    'DB_DRIVER' => 'mysql',
+    'user' => 'root',
 
-    'CHARSET' => 'utf-8'
-
+    'password' => 'default'
+    
 ];
