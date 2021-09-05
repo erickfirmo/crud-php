@@ -86,7 +86,7 @@
                                             <li class="breadcrumb-item">
                                                 <a href="<?php url('/'); ?>"> <i class="fa fa-home"></i> </a>
                                             </li>
-                                            <li class="breadcrumb-item"><a href="<?php url('pessoas'); ?>">Home</a>
+                                            <li class="breadcrumb-item"><a href="<?php url('/'); ?>">Home</a>
                                             </li>
                                         </ul>
                                     </div>
