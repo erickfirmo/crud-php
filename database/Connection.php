@@ -14,13 +14,13 @@ class Connection
     }
 
     public function getPDOConnection() {
-        $dsn = 'mysql:host='.$this->getConfig('HOST').';dbname='.$this->getConfig('DB_NAME');
+        $dsn = 'mysql:host='.$this->getConfig('host').';dbname='.$this->getConfig('database');
         try {
-            $pdo = new PDO($dsn, $this->getConfig('DB_USER'), $this->getConfig('DB_PASSWORD'));
+            $pdo = new PDO($dsn, $this->getConfig('user'), $this->getConfig('password'));
             $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             return $pdo;
         } catch(PDOException $ex) {
-            print 'Erro: '.$ex->getMessage();
+            print 'Error: '.$ex->getMessage();
         }
     }
 
