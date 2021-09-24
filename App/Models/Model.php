@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-class Model {
+abstract class Model {
 
     protected $sql;
 
@@ -56,27 +56,35 @@ class Model {
     // seta objeto com os registros da consulta
     public function setCollection(array $registers, $singleRegister=false, array $items = [], $item = null) : void
     {
-        $modelName = get_called_class();
 
         if($singleRegister) {
-            $items = (object) $registers;
+            array_push($items, $this->createObject($registers));
         } else {
-            foreach($registers as $register) {
-                $item = new $modelName;
-                // cria objeto model baseado no fillable
-                foreach ($this->fillable as $f) {
-                    $item->$f = $register[$f];
-                }
-
-                array_push($items, $item);
+            foreach($registers as $key => $register) {
+                array_push($items, $this->createObject($register));
             }
         }
 
         $collection = new \stdClass;
+        $collection->model = get_called_class();
+        $collection->table = $this->table;
+        $collection->attributes = $this->fillable;
         $collection->items = $items;
         $collection->links = $this->links;
         
         $this->collection = $collection;
+    }
+
+    // cria objeto model baseado no fillable
+    public function createObject($register)
+    {
+        $modelItem = new \stdClass;
+
+        foreach ($this->fillable as $f) {
+            $modelItem->$f = $register[$f];
+        }
+
+        return $modelItem;
     }
 
     // retorna objeto com os registros buscados
@@ -161,10 +169,12 @@ class Model {
     }
 
     // busca registros
-    public function select() : Object
+    public function select(array $columns=null) : Object
     {
+        $columns = !$columns ? '*' : implode(', ', $columns);
+
         $this->clearQuery();
-        $sql = "SELECT * FROM ".$this->table;
+        $sql = "SELECT $columns FROM ".$this->table;
         $this->addQuery($sql);
         $this->setStatement();
 
@@ -239,7 +249,7 @@ class Model {
 
         $this->setCollection($registers, true);
 
-        return $this->collection->items;
+        return $this->collection->items[0];
     }
 
     // adiciona where a query
