@@ -6,9 +6,9 @@ use App\Models\Model;
 
 class Customer extends Model {
 
-    public $table = 'customers';
+    protected $table = 'customers';
 
-    public $fillable = [
+    protected $fillable = [
         'id',
         'name',
         'email',
