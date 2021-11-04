@@ -126,7 +126,7 @@ if (!function_exists('activePage'))
 // retorna componente html com valores passados por parâmetro
 if (!function_exists('partial'))
 {
-    function partial($path, $values=NULL)
+    function partial(string $path, array $values=[])
     {
         if($values != NULL)
                 foreach($values as $responseName => $responseValue)
@@ -139,7 +139,7 @@ if (!function_exists('partial'))
 // retorna session de acordo com o índice passado como parâmetro
 if (!function_exists('session'))
 {
-    function session($key)
+    function session(string $key)
     {
         return \Core\Session::get($key);
     }
@@ -161,7 +161,7 @@ if (!function_exists('request'))
 // retorna mensagem de erro de um input enviado
 if (!function_exists('error_field'))
 {
-    function error_field($inputName) {
+    function error_field(string $inputName) {
         return isset($_SESSION['alert-errors'][$inputName]) ? $_SESSION['alert-errors'][$inputName] : '';
     }
 }
@@ -172,5 +172,15 @@ if (!function_exists('dd'))
     function dd($array) {
         print_r($array);
         die();
+    }
+}
+
+// realiza um redirecionamento
+if(!function_exists('redirect'))
+{
+    function redirect(string $route)
+    {
+        header("Location: ".(isset($_SERVER['HTTPS']) && !empty($_SERVER['HTTPS']) ? 'https' : 'http')."://".$_SERVER['HTTP_HOST'].$route);
+        exit;
     }
 }
