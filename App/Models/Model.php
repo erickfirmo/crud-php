@@ -14,9 +14,9 @@ abstract class Model {
 
     protected $perPage;
 
-    public $links;
+    protected $pages = [];
 
-    public $hasWhere;
+    protected $hasWhere;
 
     // realiza conexão com o banco de dados
     public function connect() : Object
@@ -36,7 +36,7 @@ abstract class Model {
         $rest = $count % $this->perPage;
         $pages = $count / $this->perPage;
         $pages = $rest > 0 ? ($pages + 1) : $pages;
-        $this->links = array_keys(array_fill(1, $pages, null));
+        $this->pages = array_keys(array_fill(1, $pages, []));
     }
 
     // limpa query do objeto
@@ -71,7 +71,7 @@ abstract class Model {
         $collection->table = $this->table;
         $collection->attributes = $this->fillable;
         $collection->items = $items;
-        $collection->links = $this->links;
+        $collection->pages = $this->pages;
         
         $this->collection = $collection;
     }
