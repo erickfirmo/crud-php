@@ -1,6 +1,7 @@
 {
     "require": {
-        "erickfirmo/router": "1.2.2"
+        "erickfirmo/router": "1.2.2",
+        "erickfirmo/phpmodel": "^1.2"
     },
     "autoload": {
         "psr-4": {
