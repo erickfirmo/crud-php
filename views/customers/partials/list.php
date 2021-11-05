@@ -54,5 +54,5 @@
 </table>
 
 <!-- paginação -->
-<?php partial('components/pagination', [ 'pages' => $customers->links ]); ?>
+<?php partial('components/pagination', [ 'pages' => $customers->pages ]); ?>
 
