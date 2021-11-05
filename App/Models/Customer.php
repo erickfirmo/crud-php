@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Models\Model;
+use ErickFirmo\Model;
 
 class Customer extends Model {
 
