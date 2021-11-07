@@ -1,5 +1,18 @@
 <?php
 
+// retorna configurações
+if (!function_exists('config'))
+{
+	function config($type, $key)
+	{
+		if(!isset($framework_config))
+			$framework_config = include __DIR__.'/../config/'.$type.'.php';
+
+		if(isset($key))
+			return array_key_exists($key, $framework_config) ? $framework_config[$key] : null;
+	}
+}
+
 // retorna configurações da aplicação
 if (!function_exists('app'))
 {
@@ -23,16 +36,19 @@ if (!function_exists('view'))
             foreach($values as $responseName => $responseValue)
                 $$responseName = $responseValue;
 
+        // pega pasta padrão de views
+        $defaultPath = config('view', 'default_path');
+
         // retorna view 
         $view = str_replace('.', '/', $view);
-        include '../views/'.$view.'.php';
+        include '../'.$defaultPath.'/'.$view.'.php';
 
         // limpa session de inputs
-        \Core\Session::remove('old_fields');
+        remove_session('old_fields');
 
         // limpa session de alertas
-        \Core\Session::remove('alert-errors');
-        \Core\Session::remove('alert-success');
+        remove_session('alert-errors');
+        remove_session('alert-success');
     }
 }
 
@@ -59,7 +75,7 @@ if (!function_exists('old'))
 {
     function old($inputName)
     {
-        $old_fields = \Core\Session::get('old_fields');
+        $old_fields = session('old_fields');
 
         echo isset($old_fields[$inputName]) ? $old_fields[$inputName] : '';
     }
@@ -136,22 +152,13 @@ if (!function_exists('partial'))
     }
 }
 
-// retorna session de acordo com o índice passado como parâmetro
-if (!function_exists('session'))
-{
-    function session(string $key)
-    {
-        return \Core\Session::get($key);
-    }
-}
-
 // retorna objeto request
 if (!function_exists('request'))
 {
     function request()
     {
-        if(!\Core\Session::get('old_fields')) {
-            \Core\Session::put('old_fields', $_POST);
+        if(!session('old_fields')) {
+            put_session('old_fields', $_POST);
         }
         
         return new \Core\Request;
@@ -184,3 +191,54 @@ if(!function_exists('redirect'))
         exit;
     }
 }
+
+// inicia session
+if(!function_exists('start_session'))
+{
+    function start_session()
+    {
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+    }
+}
+
+// pega valor da session
+if(!function_exists('session'))
+{
+    function session($key)
+    {
+        return isset($_SESSION[$key]) ? $_SESSION[$key] : null;
+    }
+}
+
+// cria session
+if(!function_exists('put_session'))
+{
+    function put_session($key, $value)
+    {
+        $_SESSION[$key] = $value;
+    }
+}
+
+// altera session como array
+if(!function_exists('push_session'))
+{
+    function push_session($key, $value)
+    {
+        $session = $_SESSION[$key];
+        array_push($session, $value);
+        $_SESSION[$key] = $session;
+    }
+}
+
+// remove session
+if(!function_exists('remove_session'))
+{
+    function remove_session($key)
+    {
+        if(isset($_SESSION[$key]))
+            unset($_SESSION[$key]);
+    }
+}
+    
