@@ -8,9 +8,9 @@ class Request
 
     public $lang;
 
-    public $errors;
+    public $errors = [];
 
-    public $inputs;
+    public $inputs = [];
     
     public function __construct()
     {
@@ -19,10 +19,9 @@ class Request
     }
     
     // retorna valor do campo
-    public function input($inputName)
+    public static function input($inputName)
     {
-        if(isset($_POST[$inputName])) 
-            return $_POST[$inputName];
+        return isset($this->inputs[$inputName]) ? $this->inputs[$inputName] : null;
     }
 
     // valida campos da requisição
@@ -46,7 +45,8 @@ class Request
     }
 
     // retorna nome do campo no idioma setado
-    public function getInputName($inputName) {
+    public function getInputName($inputName)
+    {
         return isset($this->lang[$inputName]) ? $this->lang[$inputName] : $inputName;
     }
 
@@ -59,52 +59,49 @@ class Request
     // regra para obrigatoriedade do campo
     public function required($inputName, $param=0)
     {
-        $this->inputs[$inputName] = $_POST[$inputName];
-
+        // verifica se campo não existe
         if(!isset($_POST[$inputName]) || empty($_POST[$inputName]))
         {
             $this->status = false;
             $this->errors[$inputName]['required'] = $this->getMessage($inputName.'.required');
+        } else {
+            $this->inputs[$inputName] = $_POST[$inputName];
         }
     }
 
     // regra para máximo de caracteres do valor do campo
     public function max($inputName, $max)
     {
-        $this->inputs[$inputName] = $_POST[$inputName];
-
         if($max < strlen($_POST[$inputName]))
         {
             $this->status = false;
             $this->errors[$inputName]['max'] = str_replace(':max', $max, $this->getMessage($inputName.'.max'));
+        } else {
+            $this->inputs[$inputName] = $_POST[$inputName];
         }
     }
 
     // regra para mínimo de caracteres do valor do campo
     public function min($inputName, $min)
     {
-        $this->inputs[$inputName] = $_POST[$inputName];
-
         if($min > strlen($_POST[$inputName]))
         {
             $this->status = false;
             $this->errors[$inputName]['min'] = $this->getMessage($inputName.'.min');
         }  else {
-            return false;
+            $this->inputs[$inputName] = $_POST[$inputName];
         }
     }
     
     // regra para tipo de dado do valor do campo
     public function datatype($inputName, $type)
     {
-        $this->inputs[$inputName] = $_POST[$inputName];
-
         if($type != gettype($_POST[$inputName]))
         {
             $this->status = false;
             $this->errors[$inputName]['datatype'] = $this->getMessage($inputName.'.datatype');
-        }  else {
-            return false;
+        } else {
+            $this->inputs[$inputName] = $_POST[$inputName];
         }
     }
 }
