@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Models\Customer;
 use Core\Session;
+use Core\Request;
 
 class CustomerController extends Controller {
 
@@ -25,18 +26,18 @@ class CustomerController extends Controller {
     }
 
     // cadastra pessoa
-    public function store()
-    {                
+    public function store(Request $request)
+    {               
         // validação de campos
-        $validated = request()->validate([
-            'name' => 'required|max:60',
-            'email' => 'required|max:60',
+        $validated = $request->validate([
+            'name' => 'required|max:40',
+            'email' => 'required|max:40',
         ]);
 
         // pega campos enviados
-        $name = request()->input('name');
-        $email = request()->input('email');
-        $phone = request()->input('phone');
+        $name = $request->input('name');
+        $email = $request->input('email');
+        $phone = $request->input('phone');
 
         // unique
         $customers = (new Customer())->select()
@@ -46,7 +47,7 @@ class CustomerController extends Controller {
         // verifica se email já está em uso
         if(count($customers->items)) {
             // seta mensagem de erro para e-mail já existente
-            $this->error('email', request()->getMessage('email.unique'));
+            $this->error('email', $request->getMessage('email.unique'));
             $validated = false;
         }
 
@@ -54,14 +55,14 @@ class CustomerController extends Controller {
         if (!filter_var($email, FILTER_VALIDATE_EMAIL) && $email != null)
         {
             // seta mensagem de erro para e-mail
-            $this->error('email', request()->getMessage('email.invalid'));
+            $this->error('email', $request->getMessage('email.invalid'));
             $validated = false;
         }
 
         // validação de telefone
         if (!$this->phoneValidate($phone) && $phone != null) {
             // seta mensagem de erro para telefone
-            $this->error('phone', request()->getMessage('phone.invalid'));
+            $this->error('phone', $request->getMessage('phone.invalid'));
             $validated = false;
         }
 
@@ -98,7 +99,7 @@ class CustomerController extends Controller {
     }
 
     // página de exibição de informações da pessoa
-    public function show(int $id)
+    public function show(Request $request, $id)
     {
         $customer = (new Customer())->findById($id);
 
@@ -106,18 +107,18 @@ class CustomerController extends Controller {
     }
 
     // atualiza informações da pessoa
-    public function update(int $id)
+    public function update(Request $request, int $id)
     {
         // validação de campos
-        $validated = request()->validate([
+        $validated = $request->validate([
             'name' => 'required|max:60',
             'email' => 'required|max:60',
         ]);
 
         // pega campos enviados
-        $name = request()->input('name');
-        $email = request()->input('email');
-        $phone = request()->input('phone');
+        $name = $request->input('name');
+        $email = $request->input('email');
+        $phone = $request->input('phone');
 
         // unique
         // verifica se email já está em uso
@@ -129,21 +130,21 @@ class CustomerController extends Controller {
         // verifica se email já está em uso
         if(count($customers->items)) {
             // seta mensagem de erro para e-mail já existente
-            $this->error('email', request()->getMessage('email.unique'));
+            $this->error('email', $request->getMessage('email.unique'));
             $validated = false;
         }
 
         // validação de email
         if (!filter_var($email, FILTER_VALIDATE_EMAIL) && $email != null){
             // seta mensagem de erro e-mail
-            $this->error('email', request()->getMessage('email.email'));
+            $this->error('email', $request->getMessage('email.email'));
             $validated = false;
         }
 
         // validação de telefone
         if (!$this->phoneValidate($phone) && $phone != null) {
             // seta mensagem de erro para telefone
-            $this->error('phone', request()->getMessage('phone.phone'));
+            $this->error('phone', $request->getMessage('phone.phone'));
             $validated = false;
         }
 
