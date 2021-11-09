@@ -12,6 +12,13 @@ trait Validator
 
     public $inputs = [];
 
+    public $validated = [];
+
+    public function validated()
+    {
+        return $this->inputs;
+    }
+
     // valida campos da requisição
     public function validate(array $rules)
     {
@@ -50,48 +57,48 @@ trait Validator
     public function required($inputName, $param=0)
     {
         // verifica se campo não existe
-        if(!isset($_POST[$inputName]) || empty($_POST[$inputName]))
+        if(!isset($this->all[$inputName]) || empty($this->all[$inputName]))
         {
             $this->status = false;
             $this->errors[$inputName]['required'] = $this->getMessage($inputName.'.required');
         } else {
-            $this->inputs[$inputName] = $_POST[$inputName];
+            $this->inputs[$inputName] = $this->all[$inputName];
         }
     }
 
     // regra para máximo de caracteres do valor do campo
     public function max($inputName, $max)
     {
-        if($max < strlen($_POST[$inputName]))
+        if($max < strlen($this->all[$inputName]))
         {
             $this->status = false;
             $this->errors[$inputName]['max'] = str_replace(':max', $max, $this->getMessage($inputName.'.max'));
         } else {
-            $this->inputs[$inputName] = $_POST[$inputName];
+            $this->inputs[$inputName] = $this->all[$inputName];
         }
     }
 
     // regra para mínimo de caracteres do valor do campo
     public function min($inputName, $min)
     {
-        if($min > strlen($_POST[$inputName]))
+        if($min > strlen($this->all[$inputName]))
         {
             $this->status = false;
             $this->errors[$inputName]['min'] = $this->getMessage($inputName.'.min');
         }  else {
-            $this->inputs[$inputName] = $_POST[$inputName];
+            $this->inputs[$inputName] = $this->all[$inputName];
         }
     }
     
     // regra para tipo de dado do valor do campo
     public function datatype($inputName, $type)
     {
-        if($type != gettype($_POST[$inputName]))
+        if($type != gettype($this->all[$inputName]))
         {
             $this->status = false;
             $this->errors[$inputName]['datatype'] = $this->getMessage($inputName.'.datatype');
         } else {
-            $this->inputs[$inputName] = $_POST[$inputName];
+            $this->inputs[$inputName] = $this->all[$inputName];
         }
     }
 }
