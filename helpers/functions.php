@@ -152,19 +152,6 @@ if (!function_exists('partial'))
     }
 }
 
-// retorna objeto request
-if (!function_exists('request'))
-{
-    function request()
-    {
-        if(!session('old_fields')) {
-            put_session('old_fields', $_POST);
-        }
-        
-        return new \Core\Request;
-    }
-}
-
 // retorna mensagem de erro de um input enviado
 if (!function_exists('error_field'))
 {
