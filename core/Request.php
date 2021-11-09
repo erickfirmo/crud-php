@@ -5,10 +5,41 @@ namespace Core;
 class Request
 {
     use Validator;
-    
-    // retorna valor do campo
-    public static function input($inputName)
+    #use FormRequest;
+
+    protected $all;
+
+    protected $requestMethod;
+
+    public function __construct()
     {
-        return isset($this->inputs[$inputName]) ? $this->inputs[$inputName] : null;
+        $this->setRequestMethod();
+        $this->setAll();
+    }
+
+    public function setRequestMethod()
+    {
+        $this->requestMethod = $_SERVER['REQUEST_METHOD'];
+    }
+
+    public function setAll()
+    {
+        $this->all = $this->getRequestMethod() == 'POST' ? $_POST : $_GET;
+    }
+
+    public function getRequestMethod()
+    {
+        return $this->requestMethod;
+    }
+
+    public function all()
+    {
+        return $this->all;
+    }
+
+    // retorna valor do campo
+    public function input($inputName)
+    {
+        return isset($this->all[$inputName]) ? $this->all[$inputName] : null;
     }
 }
