@@ -29,12 +29,12 @@ if (!function_exists('app'))
 // retorna página html
 if (!function_exists('view'))
 {
-    function view(string $view, array $values=null)
+    function view(string $view, array $vars=null)
     {
         // cria variaveis dinamicamente
-        if($values != null)
-            foreach($values as $responseName => $responseValue)
-                $$responseName = $responseValue;
+        if($vars != null)
+            foreach($vars as $varName => $varValue)
+                $$varName = $varValue;
 
         // pega pasta padrão de views
         $defaultPath = config('view', 'default_path');
@@ -47,7 +47,8 @@ if (!function_exists('view'))
         remove_session('old_fields');
 
         // limpa session de alertas
-        remove_session('alert-errors');
+        remove_session('alert-input-errors');
+        remove_session('alert-error');
         remove_session('alert-success');
     }
 }
@@ -142,12 +143,12 @@ if (!function_exists('activePage'))
 // retorna componente html com valores passados por parâmetro
 if (!function_exists('partial'))
 {
-    function partial(string $path, array $values=[])
+    function partial(string $path, array $vars=[])
     {
-        if($values != NULL)
-                foreach($values as $responseName => $responseValue)
-                    $$responseName = $responseValue;
-                    
+        if($vars != NULL)
+            foreach($vars as $varName => $varValue)
+                $$varName = $varValue;
+            
         include __DIR__."/../views/$path.php";
     }
 }
