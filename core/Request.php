@@ -13,6 +13,7 @@ class Request
 
     public function __construct()
     {
+        $this->lang = include __DIR__.'/../views/lang/'.app('lang').'.php';
         $this->setRequestMethod();
         $this->setAll();
     }
