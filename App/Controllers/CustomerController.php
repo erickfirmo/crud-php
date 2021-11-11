@@ -47,7 +47,7 @@ class CustomerController extends Controller {
         // verifica se email já está em uso
         if(count($customers->items)) {
             // seta mensagem de erro para e-mail já existente
-            $this->error('email', $request->getMessage('email.unique'));
+            $this->inputError('email', $request->getMessage('email.unique'));
             $validated = false;
         }
 
@@ -55,14 +55,14 @@ class CustomerController extends Controller {
         if (!filter_var($email, FILTER_VALIDATE_EMAIL) && $email != null)
         {
             // seta mensagem de erro para e-mail
-            $this->error('email', $request->getMessage('email.invalid'));
+            $this->inputError('email', $request->getMessage('email.invalid'));
             $validated = false;
         }
 
         // validação de telefone
         if (!$this->phoneValidate($phone) && $phone != null) {
             // seta mensagem de erro para telefone
-            $this->error('phone', $request->getMessage('phone.invalid'));
+            $this->inputError('phone', $request->getMessage('phone.invalid'));
             $validated = false;
         }
 
@@ -91,17 +91,29 @@ class CustomerController extends Controller {
     }
 
     // página de edição de pessoa
-    public function edit(int $id)
+    public function edit(Request $request, int $id)
     {
         $customer = (new Customer())->findById($id);
+
+        if(!$customer)
+        {
+            $this->error($request->getMessage('not_found_content'));
+            return $this->redirect('/pessoas');
+        }
 
         return view('customers.edit', ['customer' => $customer]);
     }
 
     // página de exibição de informações da pessoa
-    public function show(Request $request, $id)
+    public function show(Request $request, int $id)
     {
         $customer = (new Customer())->findById($id);
+
+        if(!$customer)
+        {
+            $this->error($request->getMessage('not_found_content'));
+            return $this->redirect('/pessoas');
+        }
 
         return view('customers.show', ['customer' => $customer]);
     }
@@ -130,21 +142,21 @@ class CustomerController extends Controller {
         // verifica se email já está em uso
         if(count($customers->items)) {
             // seta mensagem de erro para e-mail já existente
-            $this->error('email', $request->getMessage('email.unique'));
+            $this->inputError('email', $request->getMessage('email.unique'));
             $validated = false;
         }
 
         // validação de email
         if (!filter_var($email, FILTER_VALIDATE_EMAIL) && $email != null){
             // seta mensagem de erro e-mail
-            $this->error('email', $request->getMessage('email.email'));
+            $this->inputError('email', $request->getMessage('email.email'));
             $validated = false;
         }
 
         // validação de telefone
         if (!$this->phoneValidate($phone) && $phone != null) {
             // seta mensagem de erro para telefone
-            $this->error('phone', $request->getMessage('phone.phone'));
+            $this->inputError('phone', $request->getMessage('phone.phone'));
             $validated = false;
         }
 
