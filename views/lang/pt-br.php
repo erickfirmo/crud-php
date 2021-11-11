@@ -10,6 +10,8 @@ return [
     ],
     // errors messages
     'messages' => [
+        // not_found content
+        'not_found_content' => 'O conteúdo não foi encontrado.',
         // name
         'name.required' => 'O nome é obrigatório.',
         'name.max' => 'O nome deve ter no máximo :max caracteres.',
@@ -24,7 +26,7 @@ return [
         'phone.required' => 'O telefone é obrigatório.',
         'phone.invalid' => 'O telefone é inválido.',
         // document number
-        'document_number.required' => 'O cpf é obrigatório.',
-        'document_number.invalid' => 'O cpf é inválido.',
+        'document_number.required' => 'O CPF é obrigatório.',
+        'document_number.invalid' => 'O CPF é inválido.',
     ]
 ];
