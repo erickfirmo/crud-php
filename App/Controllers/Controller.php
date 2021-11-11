@@ -23,9 +23,9 @@ class Controller {
     }
 
     // seta mensagem de erro
-    public function error($name, $message)
+    public function inputError($name, $message)
     {
-        $errors = Session::get('alert-errors');
+        $errors = Session::get('alert-input-errors');
         
         if(isset($errors[$name])) {
             array_push($errors[$name], $message);
@@ -33,12 +33,18 @@ class Controller {
             $errors[$name][0] = $message;
         }
         
-        Session::put('alert-errors', $errors);
+        Session::put('alert-input-errors', $errors);
     }
 
     // seta mensagem de sucesso
     public function success($message)
     {
         Session::put('alert-success', $message);
+    }
+    
+    // seta mensagem de erro
+    public function error($message)
+    {
+        Session::put('alert-error', $message);
     }
 }
