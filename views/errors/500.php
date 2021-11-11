@@ -40,7 +40,7 @@ body {
 }
 
 .error-code:after {
-	content: "Looks like you found a bug.";
+	content: "Parece que você encontrou um bug";
 	position: absolute;
 	top: 0;
 	right: 0;
