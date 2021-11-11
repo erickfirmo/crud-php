@@ -22,8 +22,6 @@ trait Validator
     // valida campos da requisição
     public function validate(array $rules)
     {
-        $this->lang = include __DIR__.'/../views/lang/'.app('lang').'.php';
-
         foreach ($rules as $inputName => $rule)
         {
             $rulesArray = explode('|', $rule);
@@ -50,7 +48,9 @@ trait Validator
     // retorna mensagem de erro do campo no idioma setado
     public function getMessage($inputRule)
     {
-        return $this->lang['messages'][$inputRule];
+        //return isset($this->lang['messages'][$inputRule]) ? $this->lang['messages'][$inputRule] : null;
+        return $this->lang['messages']['not_found_content'];
+
     }
 
     // regra para obrigatoriedade do campo
