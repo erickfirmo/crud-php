@@ -6,5 +6,5 @@ $router->get('/pessoas/cadastrar', CustomerController::class, 'create', 'custome
 $router->get('/pessoas/editar/{$id}', CustomerController::class, 'edit');
 $router->get('/pessoas/{id}', CustomerController::class, 'show', 'customers.show');
 $router->post('/pessoas/store', CustomerController::class, 'store');
-$router->put('/pessoas/update/{$id}', CustomerController::class, 'update');
-$router->delete('/pessoas/destroy/{$id}', CustomerController::class, 'destroy');
+$router->put('/pessoas/update/{id}', CustomerController::class, 'update');
+$router->delete('/pessoas/destroy/{id}', CustomerController::class, 'destroy');
