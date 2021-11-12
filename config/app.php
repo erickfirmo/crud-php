@@ -16,4 +16,6 @@ return [
 
     'assets_path' => 'assets/',
 
+    'session_errors' => 'alert-errors'
+
 ];
