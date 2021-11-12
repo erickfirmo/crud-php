@@ -9,16 +9,27 @@ class Kernel
 
     public $errorsPage = null;
 
+    public $lang = 'en';
+
     public function __construct()
     {
-        $this->request = new \Core\Request;
+        $this->setLang(app('lang'));
+        $request = new \Core\Request;
+        $request->setValidatorLang(include __DIR__.'/../views/lang/'.$this->lang.'.php');
+        $request->setErrorsSessionName(app('session_errors'));
+
+        $this->request = $request;
     }
 
-    public function handle($router)
+    public function handle(Object $router)
     {
         try {
 
-            return $router->run($this->request);
+            $router->setRequest($this->request);
+
+            #$router->setRequestAttributes(['name' => '111111111111111111111111111111111111111111111111111111111111111'], $this->request);
+
+            return $router->run();
 
         } catch (\Throwable $th) {
 
@@ -28,6 +39,11 @@ class Kernel
             
             return $this->getErrorsPage($e);
         }
+    }
+
+    public function setLang(string $lang) : void
+    {
+        $this->lang = $lang;
     }
 
     // Define arquivo de visualização para erros e exceções (500)
