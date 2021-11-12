@@ -47,7 +47,7 @@ if (!function_exists('view'))
         remove_session('old_fields');
 
         // limpa session de alertas
-        remove_session('alert-input-errors');
+        remove_session(app('session_errors'));
         remove_session('alert-error');
         remove_session('alert-success');
     }
@@ -157,7 +157,7 @@ if (!function_exists('partial'))
 if (!function_exists('error_field'))
 {
     function error_field(string $inputName) {
-        return isset($_SESSION['alert-errors'][$inputName]) ? $_SESSION['alert-errors'][$inputName] : '';
+        return isset($_SESSION[app('session_errors')][$inputName]) ? $_SESSION[app('session_errors')][$inputName] : '';
     }
 }
 
