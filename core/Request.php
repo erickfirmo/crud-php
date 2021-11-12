@@ -5,42 +5,48 @@ namespace Core;
 class Request
 {
     use Validator;
-    #use FormRequest;
 
-    protected $all;
+    protected $attributes;
 
     protected $requestMethod;
 
     public function __construct()
     {
-        $this->lang = include __DIR__.'/../views/lang/'.app('lang').'.php';
+        // define método de requisição
         $this->setRequestMethod();
+        // define atributos enviados na requisição
         $this->setAll();
+        //define arquivo padrão de mensagens de validação
+        $this->setValidatorLang(include 'lang/en.php');
     }
 
-    public function setRequestMethod()
+    // define método de requisição
+    protected function setRequestMethod() : void
     {
         $this->requestMethod = $_SERVER['REQUEST_METHOD'];
     }
 
-    public function setAll()
+    // define atributos enviados na requisição
+    public function setAll(array $attributes=[]) : void
     {
-        $this->all = $this->getRequestMethod() == 'POST' ? $_POST : $_GET;
+        $this->attributes = !$attributes ? ($this->getRequestMethod() == 'POST' ? $_POST : $_GET) : $attributes;
     }
 
-    public function getRequestMethod()
+    // retorna método de requisição
+    public function getRequestMethod() : string
     {
         return $this->requestMethod;
     }
 
-    public function all()
+    // retorna todos os atributos enviados na requisição
+    public function all() : array
     {
-        return $this->all;
+        return $this->attributes;
     }
 
-    // retorna valor do campo
-    public function input($inputName)
+    // retorna atributo espeficífico da requisição
+    public function input(string $inputName) : string
     {
-        return isset($this->all[$inputName]) ? $this->all[$inputName] : null;
+        return isset($this->attributes[$inputName]) ? $this->attributes[$inputName] : '';
     }
 }
