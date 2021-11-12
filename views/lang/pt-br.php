@@ -8,9 +8,9 @@ return [
         'phone' => 'telefone',
         'document_number' => 'cpf',
     ],
-    // errors messages
+    // error messages
     'messages' => [
-        // not_found content
+        // content not found
         'not_found_content' => 'O conteúdo não foi encontrado.',
         // name
         'name.required' => 'O nome é obrigatório.',
