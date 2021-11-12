@@ -4,24 +4,38 @@ namespace Core;
 
 trait Validator
 {
-    public $status = true;
+    protected $status = true;
 
-    public $lang;
+    protected $lang = [];
 
-    public $errors = [];
+    protected $errors = [];
 
-    public $inputs = [];
+    protected $inputs = [];
 
-    public $validated = [];
+    protected $validated = [];
 
-    public function validated()
+    // define arquivo de de mensagens de validação
+    public function setValidatorLang(array $lang) : void
+    {
+        $this->lang = $lang;
+    }
+
+    // define nome da session usada para retornar os erros de validação
+    public function setErrorsSessionName(string $sessionName) : void
+    {
+        $this->errorsSessionName = $sessionName;
+    }
+
+    // retorna todos os campos validados
+    public function validated() : array
     {
         return $this->inputs;
     }
 
     // valida campos da requisição
-    public function validate(array $rules)
+    public function validate(array $rules) : bool
     {
+        // percorre os métodos correspondentes as regras passadas por parametro
         foreach ($rules as $inputName => $rule)
         {
             $rulesArray = explode('|', $rule);
@@ -34,71 +48,79 @@ trait Validator
             }   
         }
 
-        Session::put('alert-errors', $this->errors);
+        // inicia session
+        if (session_status() === PHP_SESSION_NONE)
+            session_start();
 
+        // define session padrão se não estiver configurada
+        if(!$this->errorsSessionName)
+            $this->errorsSessionName = 'alert-errors';
+
+        // salva erros na session
+        $_SESSION[$this->errorsSessionName] = $this->errors;
+
+        // retorna status da validação
         return $this->status;
     }
 
     // retorna nome do campo no idioma setado
-    public function getInputName($inputName)
+    public function getInputName(string $inputName) : string
     {
-        return isset($this->lang[$inputName]) ? $this->lang[$inputName] : $inputName;
+        return isset($this->lang['attributes'][$inputName]) ? $this->lang['attributes'][$inputName] : $inputName;
     }
 
     // retorna mensagem de erro do campo no idioma setado
-    public function getMessage($inputRule)
+    public function getMessage(string $inputRule) : string
     {
-        //return isset($this->lang['messages'][$inputRule]) ? $this->lang['messages'][$inputRule] : null;
-        return $this->lang['messages']['not_found_content'];
-
+        return isset($this->lang['messages'][$inputRule]) ? $this->lang['messages'][$inputRule] : '';
     }
 
     // regra para obrigatoriedade do campo
     public function required($inputName, $param=0)
     {
         // verifica se campo não existe
-        if(!isset($this->all[$inputName]) || empty($this->all[$inputName]))
+        if(!isset($this->attributes[$inputName]) || empty($this->attributes[$inputName]))
         {
             $this->status = false;
             $this->errors[$inputName]['required'] = $this->getMessage($inputName.'.required');
         } else {
-            $this->inputs[$inputName] = $this->all[$inputName];
+            $this->inputs[$inputName] = $this->attributes[$inputName];
         }
     }
 
     // regra para máximo de caracteres do valor do campo
     public function max($inputName, $max)
     {
-        if($max < strlen($this->all[$inputName]))
+        if($max < strlen($this->attributes[$inputName]))
         {
             $this->status = false;
             $this->errors[$inputName]['max'] = str_replace(':max', $max, $this->getMessage($inputName.'.max'));
         } else {
-            $this->inputs[$inputName] = $this->all[$inputName];
+            $this->inputs[$inputName] = $this->attributes[$inputName];
         }
     }
 
     // regra para mínimo de caracteres do valor do campo
     public function min($inputName, $min)
     {
-        if($min > strlen($this->all[$inputName]))
+        if($min > strlen($this->attributes[$inputName]))
         {
             $this->status = false;
             $this->errors[$inputName]['min'] = $this->getMessage($inputName.'.min');
         }  else {
-            $this->inputs[$inputName] = $this->all[$inputName];
+            $this->inputs[$inputName] = $this->attributes[$inputName];
         }
     }
     
     // regra para tipo de dado do valor do campo
     public function datatype($inputName, $type)
     {
-        if($type != gettype($this->all[$inputName]))
+        if($type != gettype($this->attributes[$inputName]))
         {
             $this->status = false;
             $this->errors[$inputName]['datatype'] = $this->getMessage($inputName.'.datatype');
         } else {
-            $this->inputs[$inputName] = $this->all[$inputName];
+            $this->inputs[$inputName] = $this->attributes[$inputName];
         }
     }
 }
