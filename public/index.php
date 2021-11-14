@@ -18,8 +18,6 @@ require __DIR__ . '/../vendor/autoload.php';
 # Requires helpers
 require __DIR__ . '/../helpers/functions.php';
 
-# Creating the router instance
-$router = new \ErickFirmo\Router;
 
 # Defining generic error page 
 $ambience = 'local';
@@ -35,11 +33,8 @@ if('prod' != $ambience) {
     $kernel->errorsPage(__DIR__.'/../views/errors/exceptions.php');
 }
 
-# Defining error page 404
-$router->notFoundView(__DIR__.'/../views/errors/404.php');
-
-# Load external routes file 
-require __DIR__.'/../routes/web.php';
+# Creating the router instance
+$router = new \ErickFirmo\Router;
 
 # Run the router and creating the request 
 $kernel->handle($router);
