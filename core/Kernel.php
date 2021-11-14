@@ -11,6 +11,10 @@ class Kernel
 
     public $lang = 'en';
 
+    public $webRoutes = __DIR__.'/../routes/web.php';
+
+    public $apiRoutes = __DIR__.'/../routes/api.php';
+
     public function __construct()
     {
         $this->setLang(app('lang'));
@@ -25,10 +29,22 @@ class Kernel
     {
         try {
 
-            $router->setRequest($this->request);
+            # Defining error page 404
+            $router->notFoundView(__DIR__.'/../views/errors/404.php');
 
-            #$router->setRequestAttributes(['name' => '111111111111111111111111111111111111111111111111111111111111111'], $this->request);
+            # Defining namespace
+            $router->setNamespace('App\Controllers\\');
 
+            # Passing request object
+            $router->setRequest('request', $this->request);
+
+            # Load web routes file 
+            require $this->webRoutes;
+
+            # Load api routes file 
+            # require $this->apiRoutes;
+
+            # Execute de router
             return $router->run();
 
         } catch (\Throwable $th) {
@@ -41,6 +57,7 @@ class Kernel
         }
     }
 
+    // Define arquivo de idioma
     public function setLang(string $lang) : void
     {
         $this->lang = $lang;
@@ -49,7 +66,7 @@ class Kernel
     // Define arquivo de visualização para erros e exceções (500)
     public function errorsPage($view)
     {
-        return $this->errorsPage = $view;
+        $this->errorsPage = $view;
     }
 
     protected function getErrorsPage(Object $exception)
