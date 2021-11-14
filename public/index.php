@@ -18,7 +18,6 @@ require __DIR__ . '/../vendor/autoload.php';
 # Requires helpers
 require __DIR__ . '/../helpers/functions.php';
 
-
 # Defining generic error page 
 $ambience = 'local';
 
